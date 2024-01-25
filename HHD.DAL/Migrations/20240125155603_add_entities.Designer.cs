@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace HHD.DAL.Migrations
 {
     [DbContext(typeof(HHDDbContext))]
-    [Migration("20240124232232_add_entities")]
+    [Migration("20240125155603_add_entities")]
     partial class add_entities
     {
         /// <inheritdoc />
@@ -222,9 +222,8 @@ namespace HHD.DAL.Migrations
                     b.Property<DateTime>("DeletedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<int>("RoleType")
+                        .HasColumnType("integer");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -291,9 +290,6 @@ namespace HHD.DAL.Migrations
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
                         .HasColumnType("text");
-
-                    b.Property<Guid>("RoleId")
-                        .HasColumnType("uuid");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -463,17 +459,21 @@ namespace HHD.DAL.Migrations
 
             modelBuilder.Entity("HHD.Domain.Entities.Users.Auth.UserRole", b =>
                 {
-                    b.HasOne("HHD.Domain.Entities.Users.Auth.Role", null)
+                    b.HasOne("HHD.Domain.Entities.Users.Auth.Role", "Role")
                         .WithMany("UserRoles")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("HHD.Domain.Entities.Users.User", null)
+                    b.HasOne("HHD.Domain.Entities.Users.User", "User")
                         .WithMany("UserRoles")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Role");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("HHD.Domain.Entities.Users.UserCredentials", b =>

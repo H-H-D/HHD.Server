@@ -11,7 +11,6 @@ public class User : Auditable
     public string EmailAddress { get; set; }
     public string PhoneNumber { get; set; }
 
-    public Guid RoleId { get; set; }
     public IEnumerable<UserRole> UserRoles { get; set; }
     public IEnumerable<Order> Orders { get; set; }
 }
