@@ -21,4 +21,14 @@ public class HHDDbContext : DbContext
     public DbSet<UserCredentials> UserCredentials { get; set; }
     public DbSet<VerificationCode> VerificationCodes { get; set; }
     public DbSet<UserInfoVerificationCode> UserInfoVerificationCodes { get; set; }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        // Users
+        //modelBuilder.Entity<User>().HasData(
+        //    new User { Id = Guid.Parse("548bfaa7-6905-472f-9f6f-cb9377ed6933"), FirstName = "John", LastName = "Doe", EmailAddress = "john.doe@example.com", PhoneNumber = "1234567890" },
+        //    new User { Id = Guid.Parse("bd101868-4b7b-4349-b09c-8cedbb5bafac"), FirstName = "Jane", LastName = "Smith", EmailAddress = "jane.smith@example.com", PhoneNumber = "9876543210" }
+        //    // Add more users as needed
+        //);
+    }
 }

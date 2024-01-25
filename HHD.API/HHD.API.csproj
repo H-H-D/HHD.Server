@@ -26,10 +26,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\HHD.DAL\HHD.DAL.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Controllers\" />
+    <ProjectReference Include="..\HHD.Service\HHD.Service.csproj" />
   </ItemGroup>
 
 </Project>

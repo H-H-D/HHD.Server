@@ -1,6 +1,15 @@
 ﻿using FluentValidation;
 using HHD.DAL.DbContexts;
+using HHD.DAL.IRepositories.Commons;
+using HHD.DAL.IRepositories.Users;
+using HHD.DAL.Repositories.Common;
+using HHD.DAL.Repositories.Users;
+using HHD.DAL.SeedData;
+using HHD.Service.Commons.Settings;
+using HHD.Service.Interfaces.Users;
+using HHD.Service.Services.Users;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Reflection;
 
 namespace HHD.API.Configurations;
@@ -34,11 +43,16 @@ public static partial class HostConfiguration
         var connection = builder.Configuration.GetConnectionString("ConnectionStrings");
         builder.Services.AddDbContext<HHDDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-        //builder.Services
-            //.AddScoped<IToDoRepository, ToDoRepository>();
+        //validating
+        builder.Services
+            .Configure<ValidationSettings>(builder.Configuration.GetSection(nameof(ValidationSettings)));
 
-        //builder.Services
-            //.AddScoped<IToDoService, ToDoService>();
+        builder.Services
+            .AddScoped(typeof(IRepository<>), typeof(Repository<>))
+            .AddScoped<IUserRepository, UserRepository>();
+
+        builder.Services
+        .AddScoped<IUserService, UserService>();
 
         return builder;
     }
@@ -98,5 +112,11 @@ public static partial class HostConfiguration
         app.UseSwaggerUI();
 
         return app;
+    }
+
+    private static async ValueTask<WebApplication> UseSeedData(this WebApplication app)
+    {
+        await app.Services.CreateScope().ServiceProvider.GetRequiredService<HHDDbContext>().InitializeSeedData();
+            return app;
     }
 }

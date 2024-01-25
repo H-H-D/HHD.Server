@@ -18,14 +18,15 @@ public class UserService(
     IMapper mapper
     ) : IUserService
 {
-    public IQueryable<UserForResultDto> GetAllAsync(
+    public ValueTask<IEnumerable<UserForResultDto>> GetAllAsync(
         PaginationParams @params,
-        bool asNoTracking = false
+        bool asNoTracking = false,
+        CancellationToken cancellationToken = default
         )
     {
-        var users = userRepository.SelectAll(user => user.DeletedAt == null, asNoTracking)
-            .ToPagedList<User>(@params);
-        return mapper.Map<IQueryable<UserForResultDto>>(users);
+        var users = userRepository.SelectAll(user => user.DeletedAt == null, asNoTracking).Skip((@params.PageIndex - 1) * @params.PageSize).Take(@params.PageSize);
+        //.ToPagedList<User>(@params);
+        return new(mapper.Map<IEnumerable<UserForResultDto>>(users));
     }
 
     public async ValueTask<UserForResultDto?> GetByIdAsync(
@@ -53,11 +54,13 @@ public class UserService(
 
     public async ValueTask<UserForResultDto> UpdateAsync(
         UserForUpdateDto userForUpdateDto,
+        Guid userId,
         bool saveChanges = true,
         CancellationToken cancellationToken = default
         )
     {
         var user = mapper.Map<User>(userForUpdateDto);
+        user.Id = userId;
 
         var validationResult = userValidate.Validate(user);
         if (!validationResult.IsValid)

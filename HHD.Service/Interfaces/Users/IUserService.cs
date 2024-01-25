@@ -7,9 +7,10 @@ namespace HHD.Service.Interfaces.Users;
 
 public interface IUserService
 {
-    IQueryable<UserForResultDto> GetAllAsync(
+    ValueTask<IEnumerable<UserForResultDto>> GetAllAsync(
         PaginationParams @params,
-        bool asNoTracking = false);
+        bool asNoTracking = false,
+        CancellationToken cancellationToken = default);
 
     ValueTask<UserForResultDto?> GetByIdAsync(
         Guid userId,
@@ -23,6 +24,7 @@ public interface IUserService
 
     ValueTask<UserForResultDto> UpdateAsync(
         UserForUpdateDto userForUpdateDto,
+        Guid userId,
         bool saveChanges = true,
         CancellationToken cancellationToken = default);
 

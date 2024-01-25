@@ -19,6 +19,8 @@ public static partial class HostConfiguration
     {
         //await app.MigrateDatabaseAsync();
 
+        await app.UseSeedData();
+
         app
             .UseCors();
         app
