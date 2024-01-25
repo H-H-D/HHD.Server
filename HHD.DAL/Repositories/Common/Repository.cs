@@ -3,8 +3,6 @@ using HHD.DAL.IRepositories.Commons;
 using HHD.Domain.Entities.Commons;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
-using System.Linq;
-using System.Security.Principal;
 namespace HHD.DAL.Repositories.Common;
 
 
