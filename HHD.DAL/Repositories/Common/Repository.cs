@@ -81,7 +81,7 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : Auditabl
         var entity = await _dbContext.Set<TEntity>().FirstOrDefaultAsync(entity => entity.Id == id, cancellationToken) ??
                      throw new InvalidOperationException();
 
-        _dbContext.Set<TEntity>().Remove(entity);
+        entity.DeletedAt = DateTime.UtcNow;
 
         if (saveChanges)
             await _dbContext.SaveChangesAsync(cancellationToken);
