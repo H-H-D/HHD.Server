@@ -3,6 +3,6 @@ using HHD.Domain.Entities.Users;
 
 namespace HHD.DAL.IRepositories.Users;
 
-public interface IUserService : IRepository<User>
+public interface IUserRepository : IRepository<User>
 {
 }
