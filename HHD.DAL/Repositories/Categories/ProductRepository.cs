@@ -7,7 +7,7 @@ namespace HHD.DAL.Repositories.Categories;
 
 public class ProductRepository : Repository<Product>, IProductRepository
 {
-    public OrderRepository(HHDDbContext dbContext) : base(dbContext)
+    public ProductRepository(HHDDbContext dbContext) : base(dbContext)
     {
 
     }
