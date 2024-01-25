@@ -6,6 +6,9 @@ using HHD.Service.Interfaces.Users;
 using HHD.Service.Validators.Users;
 using System.Linq.Expressions;
 using FluentValidation;
+using HHD.Domain.Configurations;
+using Microsoft.Extensions.Logging;
+using HHD.Service.Commons.Extentions;
 
 namespace HHD.Service.Services.Users;
 
@@ -15,12 +18,13 @@ public class UserService(
     IMapper mapper
     ) : IUserService
 {
-    public IQueryable<UserForResultDto> Get(
-        Expression<Func<UserForResultDto, bool>>? predicate = default,
+    public IQueryable<UserForResultDto> GetAllAsync(
+        PaginationParams @params,
         bool asNoTracking = false
         )
     {
-        var users = userRepository.SelectAll(user => user.DeletedAt == null, asNoTracking);
+        var users = userRepository.SelectAll(user => user.DeletedAt == null, asNoTracking)
+            .ToPagedList<User>(@params);
         return mapper.Map<IQueryable<UserForResultDto>>(users);
     }
 

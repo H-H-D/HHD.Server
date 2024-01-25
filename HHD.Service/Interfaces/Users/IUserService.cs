@@ -1,4 +1,5 @@
-﻿using HHD.Domain.Entities.Users;
+﻿using HHD.Domain.Configurations;
+using HHD.Domain.Entities.Users;
 using HHD.Service.DTOs.Users;
 using System.Linq.Expressions;
 
@@ -6,8 +7,8 @@ namespace HHD.Service.Interfaces.Users;
 
 public interface IUserService
 {
-    IQueryable<UserForResultDto> Get(
-        Expression<Func<UserForResultDto, bool>>? predicate = default,
+    IQueryable<UserForResultDto> GetAllAsync(
+        PaginationParams @params,
         bool asNoTracking = false);
 
     ValueTask<UserForResultDto?> GetByIdAsync(
