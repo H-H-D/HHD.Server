@@ -1,10 +1,13 @@
-﻿namespace HHD.API.Configurations;
+﻿using HHD.API.Middlewares;
+
+namespace HHD.API.Configurations;
 
 public static partial class HostConfiguration
 {
     public static ValueTask<WebApplicationBuilder> ConfigureAsync(this WebApplicationBuilder builder)
     {
         builder
+            .AddLogger()
             .AddValidators()
             .AddMappers()
             .AddBusinessLogic()
@@ -24,6 +27,7 @@ public static partial class HostConfiguration
         app
             .UseCors();
         app
+            .UseCustomMiddleWare()
             .UseExposers()
             .UseDevTools();
         
