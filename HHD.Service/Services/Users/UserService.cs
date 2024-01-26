@@ -14,7 +14,7 @@ namespace HHD.Service.Services.Users;
 
 public class UserService(
     IUserRepository userRepository,
-    UserValidator userValidate,
+    UserValidator userValidator,
     IMapper mapper
     ) : IUserService
 {
@@ -45,7 +45,7 @@ public class UserService(
         )
     {
         var user = mapper.Map<User>(userForCreationDto);
-        var validationResult = userValidate.Validate(user);
+        var validationResult = userValidator.Validate(user);
         if (!validationResult.IsValid)
             throw new ValidationException(validationResult.Errors);
 
@@ -62,7 +62,7 @@ public class UserService(
         var user = mapper.Map<User>(userForUpdateDto);
         user.Id = userId;
 
-        var validationResult = userValidate.Validate(user);
+        var validationResult = userValidator.Validate(user);
         if (!validationResult.IsValid)
             throw new ValidationException(validationResult.Errors);
 

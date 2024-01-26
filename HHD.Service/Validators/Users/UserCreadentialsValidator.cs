@@ -5,9 +5,9 @@ using Microsoft.Extensions.Options;
 
 namespace HHD.Service.Validators.Users;
 
-public class UserCredentialsValidator : AbstractValidator<UserCredentials>
+public class UserCreadentialsValidator : AbstractValidator<UserCredentials>
 {
-    public UserCredentialsValidator(IOptions<ValidationSettings> validationSettings)
+    public UserCreadentialsValidator(IOptions<ValidationSettings> validationSettings)
     {
         var validationSettingsValue = validationSettings.Value;
 
