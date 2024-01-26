@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using HHD.API.Middlewares;
 using HHD.DAL.DbContexts;
 using HHD.DAL.IRepositories.Commons;
 using HHD.DAL.IRepositories.Users;
@@ -9,7 +10,7 @@ using HHD.Service.Commons.Settings;
 using HHD.Service.Interfaces.Users;
 using HHD.Service.Services.Users;
 using Microsoft.EntityFrameworkCore;
-using System;
+using Serilog;
 using System.Reflection;
 
 namespace HHD.API.Configurations;
@@ -99,6 +100,20 @@ public static partial class HostConfiguration
     //    return app;
     //}
 
+    private static WebApplicationBuilder AddLogger(this WebApplicationBuilder builder)
+    {
+        var logger = new LoggerConfiguration()
+            .ReadFrom.Configuration(builder.Configuration)
+            .Enrich.FromLogContext()
+            .CreateLogger();
+
+        builder.Logging.ClearProviders();
+
+        builder.Logging.AddSerilog(logger);
+
+        return builder;
+    }
+
     private static WebApplication UseExposers(this WebApplication app)
     {
         app.MapControllers();
@@ -118,5 +133,11 @@ public static partial class HostConfiguration
     {
         await app.Services.CreateScope().ServiceProvider.GetRequiredService<HHDDbContext>().InitializeSeedData();
             return app;
+    }
+
+    private static WebApplication UseCustomMiddleWare(this WebApplication app)
+    {
+        app.UseMiddleware<ExceptionHandlerMiddleWare>();
+        return app;
     }
 }
